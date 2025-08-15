@@ -100,7 +100,7 @@ Frontend/
 
 ## 🌟 Main Features
 - Login/Register (JWT)
-- Role-based access (Admin, Teacher, Student)
+- Role-based access (Admin, Student)
 - Course & User management
 - Student enrollment
 - Health check endpoint
@@ -154,7 +154,6 @@ Use token in headers:
 **Roles:**
 - ADMIN: Full access, manage users/courses
 - STUDENT: Profile, enroll, browse courses
-- TEACHER: Create/manage courses, view students
 
 ---
 
@@ -233,25 +232,37 @@ java -jar -Dspring.profiles.active=prod target/backend-0.0.1-SNAPSHOT.jar
 
 ## 👥 User Roles
 - **Student**: Enroll in courses, view dashboard
-- **Teacher**: Create/manage courses, view students
 - **Admin**: Manage users, courses, system settings
+```sql
+CREATE TABLE users (
+   id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   username VARCHAR(50) UNIQUE NOT NULL,
+   email VARCHAR(100) UNIQUE NOT NULL,
+   password VARCHAR(255) NOT NULL,
+   role ENUM('ADMIN', 'STUDENT') DEFAULT 'STUDENT',
+   is_active BOOLEAN DEFAULT TRUE,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
----
+CREATE TABLE courses (
+   course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   course_name VARCHAR(100) NOT NULL,
+   course_code VARCHAR(20) UNIQUE NOT NULL,
+   course_duration INTEGER NOT NULL,
+   description TEXT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-## 📞 Support
-- Email: rohitshimpi737@gmail.com
-- Issues: Create an issue on GitHub
-
----
-
-## 🤝 Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Commit and push your changes
-4. Create a Pull Request
-
----
-
-**Built with ❤️ by [Rohit Shimpi](https://github.com/rohitshimpi737)**
+CREATE TABLE enrollments (
+   enrollment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   user_id BIGINT NOT NULL,
+   course_id BIGINT NOT NULL,
+   enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(id),
+   FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+```
 
 ---
