@@ -161,20 +161,33 @@ Use token in headers:
 
 ```sql
 CREATE TABLE users (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role ENUM('ADMIN', 'STUDENT', 'TEACHER') DEFAULT 'STUDENT',
-  course_id BIGINT,
-  FOREIGN KEY (course_id) REFERENCES courses(course_id)
+   id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   username VARCHAR(50) UNIQUE NOT NULL,
+   email VARCHAR(100) UNIQUE NOT NULL,
+   password VARCHAR(255) NOT NULL,
+   role ENUM('ADMIN', 'STUDENT') DEFAULT 'STUDENT',
+   is_active BOOLEAN DEFAULT TRUE,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE courses (
-  course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  course_name VARCHAR(100) NOT NULL,
-  course_code VARCHAR(20) UNIQUE NOT NULL,
-  course_duration INTEGER NOT NULL
+   course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   course_name VARCHAR(100) NOT NULL,
+   course_code VARCHAR(20) UNIQUE NOT NULL,
+   course_duration INTEGER NOT NULL,
+   description TEXT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE enrollments (
+   enrollment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   user_id BIGINT NOT NULL,
+   course_id BIGINT NOT NULL,
+   enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(id),
+   FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
 ```
 
@@ -227,42 +240,5 @@ java -jar -Dspring.profiles.active=prod target/backend-0.0.1-SNAPSHOT.jar
 ## 📦 Tech Stack
 - Backend: Spring Boot, MySQL, JWT
 - Frontend: React 18, Vite, Tailwind CSS, Axios
-
----
-
-## 👥 User Roles
-- **Student**: Enroll in courses, view dashboard
-- **Admin**: Manage users, courses, system settings
-```sql
-CREATE TABLE users (
-   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   username VARCHAR(50) UNIQUE NOT NULL,
-   email VARCHAR(100) UNIQUE NOT NULL,
-   password VARCHAR(255) NOT NULL,
-   role ENUM('ADMIN', 'STUDENT') DEFAULT 'STUDENT',
-   is_active BOOLEAN DEFAULT TRUE,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE courses (
-   course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   course_name VARCHAR(100) NOT NULL,
-   course_code VARCHAR(20) UNIQUE NOT NULL,
-   course_duration INTEGER NOT NULL,
-   description TEXT,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE enrollments (
-   enrollment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   user_id BIGINT NOT NULL,
-   course_id BIGINT NOT NULL,
-   enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   FOREIGN KEY (user_id) REFERENCES users(id),
-   FOREIGN KEY (course_id) REFERENCES courses(course_id)
-);
-```
 
 ---
