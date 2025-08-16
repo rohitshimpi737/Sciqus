@@ -1,244 +1,293 @@
-# Sciqus LMS - Full Stack Project
+# Sciqus - Learning Management System
 
-Sciqus is a Learning Management System (LMS) built with a Spring Boot REST API backend and a React + Tailwind CSS frontend. It supports student, teacher, and admin roles, JWT authentication, and MySQL database.
+A full-stack Learning Management System built with **Spring Boot** (Backend) and **React** (Frontend), featuring role-based access control, course management, and student enrollment capabilities.
 
----
+## 🛠️ Tech Stack
 
-## 🚀 Quick Setup
+**Backend:**
+- Spring Boot 3.x with Spring Security
+- MySQL Database with JPA/Hibernate
+- JWT Authentication & Authorization
+- RESTful API Architecture
+- Maven Build Tool
+
+**Frontend:**
+- React 18 with Vite
+- Tailwind CSS for Styling
+- Axios for API Integration
+- React Router for Navigation
+- Context API for State Management
+
+## 🚀 Features
+
+### Authentication & Authorization
+- JWT-based secure authentication
+- Role-based access control (Admin, Student)
+- User registration and profile management
+- Session management with auto-refresh
+
+### Admin Features
+- **Dashboard:** System statistics and overview
+- **User Management:** Create, update, delete users
+- **Course Management:** Full CRUD operations for courses
+- **Enrollment Management:** Manage student enrollments
+- **System Monitoring:** View system health and activity
+
+### Student Features
+- **Dashboard:** Personalized learning overview
+- **Course Catalog:** Browse and search available courses
+- **My Learning:** Track enrolled courses and progress
+- **Self-Enrollment:** Enroll in available courses
+- **Profile Management:** Update personal information
+
+## 📱 UI Screenshots
+
+### Login & Authentication
+![Login Page](screenshots/login.png)
+*Login page with demo credentials and role-based authentication*
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+*Admin dashboard with system statistics and management tools*
+
+![User Management](screenshots/user-management.png)
+*User management interface with CRUD operations*
+
+![Course Management](screenshots/course-management.png)
+*Course management with creation, editing, and status controls*
+
+### Student Interface
+![Student Dashboard](screenshots/student-dashboard.png)
+*Student dashboard with learning progress and quick actions*
+
+![Course Catalog](screenshots/course-catalog.png)
+*Course catalog with search and enrollment capabilities*
+
+![My Learning](screenshots/my-learning.png)
+*Student's enrolled courses and learning progress tracking*
+
+## ⚡ Quick Start
 
 ### Prerequisites
-- Java 17+
-- Maven 3.6+
-- MySQL 8.0+
-- Node.js v16+
-- npm (or yarn)
-
-### Backend Setup
-1. Clone & Setup
-   ```bash
-   git clone https://github.com/rohitshimpi737/Sciqus.git
-   cd Sciqus/backend
-   ```
-2. Database Setup
-   ```bash
-   mysql -u root -p < database_schema.sql
-   ```
-   This creates the `sciqus_db` database, tables, sample courses, and admin user.
-3. Configuration
-   Edit `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/sciqus_db
-   spring.datasource.username=root
-   spring.datasource.password=your_mysql_password
-   app.jwtSecret=sciqusSecretKeyForJWTTokenGenerationAndValidation2024
-   app.jwtExpirationMs=86400000
-   ```
-4. Run the Application
-   ```bash
-   mvn spring-boot:run
-   # Or build and run JAR
-   mvn clean package
-   java -jar target/backend-0.0.1-SNAPSHOT.jar
-   ```
-   App runs at: http://localhost:8080
-
-### Frontend Setup
-1. Go to frontend folder:
-   ```bash
-   cd ../Frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment:
-   - Create a `.env` file in the project root:
-     ```env
-     VITE_API_BASE_URL=http://localhost:8080
-     VITE_APP_NAME=Sciqus
-     ```
-4. Start the app:
-   ```bash
-   npm run dev
-   ```
-   App runs at: http://localhost:5173
-
----
-
-## 🗂️ Project Structure
-
-### Backend
-```
-backend/
-├── src/main/java/com/sciqus/backend/
-│   ├── controller/
-│   ├── entity/
-│   ├── repository/
-│   ├── service/
-│   └── ...
-├── src/main/resources/application.properties
-├── pom.xml
-└── ...
-```
-
-### Frontend
-```
-Frontend/
-├── src/
-│   ├── components/          # Reusable UI components
-│   ├── context/             # React contexts (AuthContext)
-│   ├── pages/               # Page components (Login, Register, Dashboard, etc.)
-│   ├── services/            # API services (Axios)
-│   ├── App.jsx              # Main app component
-│   └── main.jsx             # React entry point
-├── public/
-├── package.json
-└── ...
-```
-
----
-
-## 🌟 Main Features
-- Login/Register (JWT)
-- Role-based access (Admin, Student)
-- Course & User management
-- Student enrollment
-- Health check endpoint
-
----
-
-## 🔗 API Endpoints (Essential)
-
-### Authentication
-- `POST /api/auth/register` — Register new student
-- `POST /api/auth/login` — Login and get JWT token
-- `GET /api/auth/me` — Get current user info
-- `POST /api/auth/logout` — Logout
-
-### Users (Admin Only)
-- `GET /api/users` — Get all users
-- `POST /api/users` — Create user
-- `PUT /api/users/{id}` — Update user
-- `DELETE /api/users/{id}` — Delete user
-- `PATCH /api/users/{id}/activate` — Activate user
-- `PATCH /api/users/{id}/deactivate` — Deactivate user
-
-### Courses
-- `GET /api/courses` — Browse courses
-- `POST /api/courses` — Create course (Admin)
-- `GET /api/courses/search?keyword=` — Search courses
-- `PUT /api/courses/{id}` — Update course (Admin)
-- `DELETE /api/courses/{id}` — Delete course (Admin)
-
-### Students
-- `GET /api/student/profile` — Get own profile
-- `GET /api/student/course` — Get enrolled course
-- `POST /api/student/enroll/{id}` — Self-enroll in course
-
-### System
-- `GET /api/health` — Health check
-
----
-
-## 🛡️ Authentication & Roles
-
-**Login to get JWT token:**
 ```bash
-curl -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"usernameOrEmail":"admin","password":"admin123"}'
+Java 17+, Maven 3.6+, MySQL 8.0+, Node.js 16+, npm/yarn
 ```
-Use token in headers:
-`Authorization: Bearer <your-jwt-token>`
 
-**Roles:**
-- ADMIN: Full access, manage users/courses
-- STUDENT: Profile, enroll, browse courses
+### 1. Clone Repository
+```bash
+git clone https://github.com/rohitshimpi737/Sciqus.git
+cd Sciqus
+```
 
----
+### 2. Database Setup
+```sql
+-- Create database
+CREATE DATABASE sciqus_db;
+
+-- Import schema (if provided)
+mysql -u root -p sciqus_db < database_schema.sql
+```
+
+### 3. Backend Setup
+```bash
+cd backend
+
+# Configure database in application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/sciqus_db
+spring.datasource.username=root
+spring.datasource.password=your_password
+
+# Run application
+mvn spring-boot:run
+```
+Backend runs at: `http://localhost:8080`
+
+### 4. Frontend Setup
+```bash
+cd Frontend
+
+# Install dependencies
+npm install
+
+# Create .env file
+echo "VITE_API_BASE_URL=http://localhost:8080" > .env
+
+# Start development server
+npm run dev
+```
+Frontend runs at: `http://localhost:5173`
+
+## 👤 Demo Accounts
+
+**Admin Account:**
+- Username: `admin` or Email: `admin@sciqus.com`
+- Password: `admin123`
+
+**Student Account:**
+- Username: `student` or Email: `student@sciqus.com`  
+- Password: `student123`
+
+## � Project Architecture
+
+```
+Sciqus/
+├── backend/                    # Spring Boot REST API
+│   ├── src/main/java/com/sciqus/backend/
+│   │   ├── controller/         # REST Controllers
+│   │   ├── entity/            # JPA Entities
+│   │   ├── repository/        # Data Access Layer
+│   │   ├── service/           # Business Logic
+│   │   ├── dto/               # Data Transfer Objects
+│   │   ├── config/            # Security & Configuration
+│   │   └── exception/         # Exception Handling
+│   ├── src/main/resources/
+│   │   ├── application.properties
+│   │   └── static/
+│   └── pom.xml               # Maven Dependencies
+│
+├── Frontend/                  # React Application
+│   ├── src/
+│   │   ├── components/        # Reusable UI Components
+│   │   ├── pages/            # Route Components
+│   │   │   ├── admin/        # Admin Management Pages
+│   │   │   ├── student/      # Student Learning Pages
+│   │   │   └── common/       # Shared Pages (Login, Register)
+│   │   ├── context/          # React Context (AuthContext)
+│   │   ├── services/         # API Services (Axios)
+│   │   ├── hooks/            # Custom React Hooks
+│   │   └── utils/            # Utility Functions
+│   ├── public/               # Static Assets
+│   └── package.json          # npm Dependencies
+│
+└── README.md                 # Project Documentation
+```
+
+## � API Overview
+
+### Authentication Endpoints
+```bash
+POST /api/auth/register     # User registration
+POST /api/auth/login        # User authentication
+GET  /api/auth/me          # Get current user
+POST /api/auth/logout      # User logout
+```
+
+### Admin Endpoints
+```bash
+GET  /api/admin/stats      # System statistics
+GET  /api/admin/users      # User management
+GET  /api/admin/courses    # Course management
+```
+
+### Student Endpoints  
+```bash
+GET  /api/student/dashboard           # Student dashboard
+GET  /api/student/enrollments        # My enrolled courses
+GET  /api/student/available-courses  # Browse courses
+POST /api/student/enroll/{courseId}  # Enroll in course
+```
+
+### Public Endpoints
+```bash
+GET /api/courses           # Browse all courses
+GET /api/health           # System health check
+```
 
 ## 🗄️ Database Schema
 
 ```sql
+-- Users table
 CREATE TABLE users (
-   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   username VARCHAR(50) UNIQUE NOT NULL,
-   email VARCHAR(100) UNIQUE NOT NULL,
-   password VARCHAR(255) NOT NULL,
-   role ENUM('ADMIN', 'STUDENT') DEFAULT 'STUDENT',
-   is_active BOOLEAN DEFAULT TRUE,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    phone_number VARCHAR(15),
+    role ENUM('ADMIN', 'STUDENT') DEFAULT 'STUDENT',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Courses table
 CREATE TABLE courses (
-   course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   course_name VARCHAR(100) NOT NULL,
-   course_code VARCHAR(20) UNIQUE NOT NULL,
-   course_duration INTEGER NOT NULL,
-   description TEXT,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    course_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    course_name VARCHAR(100) NOT NULL,
+    course_code VARCHAR(20) UNIQUE NOT NULL,
+    course_duration INTEGER NOT NULL,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Enrollments table
 CREATE TABLE enrollments (
-   enrollment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-   user_id BIGINT NOT NULL,
-   course_id BIGINT NOT NULL,
-   enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   FOREIGN KEY (user_id) REFERENCES users(id),
-   FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    student_id BIGINT NOT NULL,
+    course_id BIGINT NOT NULL,
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_enrollment (student_id, course_id)
 );
 ```
 
----
+## 🧪 Testing the Application
 
-## 🧪 Testing
-
-**Health check:**
+### Health Check
 ```bash
 curl http://localhost:8080/api/health
 ```
-**Browse courses:**
+
+### Authentication Test
 ```bash
-curl http://localhost:8080/api/courses
-```
-**Login as admin:**
-```bash
+# Login as admin
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"usernameOrEmail":"admin","password":"admin123"}'
 ```
 
----
-
-## 📝 Configuration & Deployment
-
-**Backend Application Properties:**
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/sciqus_db
-spring.datasource.username=root
-spring.datasource.password=your_mysql_password
-app.jwtSecret=sciqusSecretKeyForJWTTokenGenerationAndValidation2024
-app.jwtExpirationMs=86400000
-```
-
-**Frontend Environment Variables:**
-| Variable | Description | Default |
-|----------|-------------|---------|
-| VITE_API_BASE_URL | Backend API URL | http://localhost:8080 |
-| VITE_APP_NAME     | Application name | Sciqus |
-
-**Production Deployment:**
+### Browse Courses
 ```bash
-mvn clean package
-java -jar -Dspring.profiles.active=prod target/backend-0.0.1-SNAPSHOT.jar
+curl http://localhost:8080/api/courses
 ```
 
+## 🚀 Deployment
+
+### Backend Production Build
+```bash
+cd backend
+mvn clean package
+java -jar target/backend-0.0.1-SNAPSHOT.jar
+```
+
+### Frontend Production Build
+```bash
+cd Frontend
+npm run build
+# Deploy the 'dist' folder to your web server
+```
+
+## 🎯 Key Implementation Highlights
+
+- **Security:** JWT-based authentication with role-based authorization
+- **Architecture:** Clean separation of concerns with proper layered architecture
+- **Database:** Normalized schema with proper foreign key relationships
+- **Frontend:** Modern React with hooks, context API, and responsive design
+- **API Design:** RESTful endpoints with proper HTTP status codes
+- **Error Handling:** Comprehensive error handling on both client and server
+- **Validation:** Input validation on both frontend and backend
+- **Responsive UI:** Mobile-first design with Tailwind CSS
+
+## 📧 Contact
+
+**Developer:** Rohit Shimpi  
+**GitHub:** [rohitshimpi737](https://github.com/rohitshimpi737)  
+**Repository:** [Sciqus](https://github.com/rohitshimpi737/Sciqus)
+
 ---
 
-## 📦 Tech Stack
-- Backend: Spring Boot, MySQL, JWT
-- Frontend: React 18, Vite, Tailwind CSS, Axios
-
----
+*This project demonstrates full-stack development skills with modern technologies, secure authentication, and clean architecture principles.*

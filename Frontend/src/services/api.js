@@ -44,7 +44,7 @@ export const authAPI = {
   login: (credentials) => {
     // Transform the credentials to match backend expectations
     const loginData = {
-      usernameOrEmail: credentials.email,
+      usernameOrEmail: credentials.usernameOrEmail,
       password: credentials.password
     };
     
@@ -54,31 +54,31 @@ export const authAPI = {
   getCurrentUser: () => api.get('/auth/me'),
 };
 
-// Course API
+// Course API - Fixed to match backend /api/courses
 export const courseAPI = {
-  getAllCourses: () => api.get('/course'),
-  getCourse: (id) => api.get(`/course/${id}`),
-  createCourse: (courseData) => api.post('/course', courseData),
-  updateCourse: (id, courseData) => api.put(`/course/${id}`, courseData),
-  deleteCourse: (id) => api.delete(`/course/${id}`),
+  getAllCourses: () => api.get('/courses'),
+  getCourse: (id) => api.get(`/courses/${id}`),
+  createCourse: (courseData) => api.post('/courses', courseData),
+  updateCourse: (id, courseData) => api.put(`/courses/${id}`, courseData),
+  deleteCourse: (id) => api.delete(`/courses/${id}`),
 };
 
-// User API
+// User API - Fixed to match backend /api/users
 export const userAPI = {
-  getAllUsers: () => api.get('/user'),
-  getUser: (id) => api.get(`/user/${id}`),
-  updateUser: (id, userData) => api.put(`/user/${id}`, userData),
-  deleteUser: (id) => api.delete(`/user/${id}`),
-  updateUserRole: (id, role) => api.put(`/user/${id}/role`, { role }),
+  getAllUsers: () => api.get('/users'),
+  getUser: (id) => api.get(`/users/${id}`),
+  updateUser: (id, userData) => api.put(`/users/${id}`, userData),
+  deleteUser: (id) => api.delete(`/users/${id}`),
+  updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role }),
 };
 
-// Student API
+// Student API - Fixed to match backend /api/student
 export const studentAPI = {
   enrollInCourse: (courseId) => api.post(`/student/enroll/${courseId}`),
-  getMyInfo: () => api.get('/student/info'),
-  getMyCourses: () => api.get('/student/courses'),
+  getMyInfo: () => api.get('/student/profile'),
+  getMyCourses: () => api.get('/student/course'),
   getMyEnrollments: () => api.get('/student/enrollments'),
-  getAvailableCourses: () => api.get('/courses/available'),
+  getAvailableCourses: () => api.get('/student/available-courses'),
   getCourseDetails: (courseId) => api.get(`/courses/${courseId}`),
   getAllCourses: () => api.get('/courses'),
   getDashboard: () => api.get('/student/dashboard'),
@@ -86,51 +86,51 @@ export const studentAPI = {
   changePassword: (passwordData) => api.put('/student/change-password', passwordData),
 };
 
-// Admin API
+// Admin API - Complete admin functionality
 export const adminAPI = {
-  // User management - Updated to match your backend
-  getAllUsers: () => api.get('/users'),
+  // Statistics and analytics
+  getDashboardStats: () => api.get('/admin/stats'),
+  getAllUsers: () => api.get('/admin/users'),
+  getAllCoursesForAdmin: () => api.get('/admin/courses'),
+  getUserStats: () => api.get('/admin/stats/users'),
+  getCourseStats: () => api.get('/admin/stats/courses'),
+  
+  // User management (using regular user endpoints with admin auth)
   createUser: (userData) => api.post('/users', userData),
   updateUser: (id, userData) => api.put(`/users/${id}`, userData),
   deleteUser: (id) => api.delete(`/users/${id}`),
-  activateUser: (id) => api.patch(`/users/${id}/activate`),
-  deactivateUser: (id) => api.patch(`/users/${id}/deactivate`),
   updateUserRole: (id, role) => api.put(`/users/${id}/role`, { role }),
   
-  // Course management - Updated to match your backend
-  getAllCourses: () => api.get('/courses'),
-  getCourseById: (id) => api.get(`/courses/${id}`),
-  searchCourses: (keyword) => api.get(`/courses/search?keyword=${encodeURIComponent(keyword)}`),
+  // User activation/deactivation (using user endpoints)
+  activateUser: (id) => api.put(`/users/${id}`, { isActive: true }),
+  deactivateUser: (id) => api.put(`/users/${id}`, { isActive: false }),
+  
+  // Course management (using regular course endpoints with admin auth)
   createCourse: (courseData) => api.post('/courses', courseData),
   updateCourse: (id, courseData) => api.put(`/courses/${id}`, courseData),
   deleteCourse: (id) => api.delete(`/courses/${id}`),
+  getActiveCourses: () => api.get('/courses/filter/active'),
+  getInactiveCourses: () => api.get('/courses/filter/inactive'),
+  getAllCourses: () => api.get('/courses'),
+  toggleCourseStatus: (id) => api.put(`/courses/${id}/course-status/toggle`),
   
-  // Enrollment management - Updated to match actual backend controller
-  // Note: DELETE endpoint for unenrolling students is not yet implemented in backend
+  // Enrollment management
   enrollStudentInCourse: (courseId, studentId) => api.post(`/courses/${courseId}/students/${studentId}`, {}),
   getCourseStudents: (courseId) => api.get(`/courses/${courseId}/students`),
   getSpecificStudentInCourse: (courseId, studentId) => api.get(`/courses/${courseId}/students/${studentId}`),
   getAllEnrollments: () => api.get(`/enrollments`),
   
-  // Student self-enrollment
+  // Student self-enrollment (alternative endpoint)
   studentSelfEnroll: (courseId) => api.post(`/courses/${courseId}/enroll`, {}),
   
-  getStudentCourses: (studentId) => api.get(`/students/${studentId}/courses`), // May not be implemented yet
-  
-  // Statistics and analytics (keeping as fallback)
-  getDashboardStats: () => api.get('/admin/stats'),
-  getUserStats: () => api.get('/admin/stats/users'),
-  getCourseStats: () => api.get('/admin/stats/courses'),
-  getSystemActivity: () => api.get('/admin/activity'),
-  
-  // System health
+  // System health and activity
   getSystemHealth: () => api.get('/admin/health'),
+  getSystemActivity: () => api.get('/admin/activity'),
 };
 
-// Health API
+// Health API - System health check endpoints
 export const healthAPI = {
   check: () => api.get('/health'),
-  // Alternative health check endpoints to try
   ping: () => api.get('/'),
   actuator: () => api.get('/actuator/health'),
 };

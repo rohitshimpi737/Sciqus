@@ -32,9 +32,9 @@ const UserManagement = () => {
         
         const response = await adminAPI.getAllUsers();
         
-        // Your backend returns data directly as an array, not wrapped in {success, data}
-        if (response.data && Array.isArray(response.data)) {
-          const users = response.data;
+        // Backend returns ApiResponseDto format: {success: boolean, message: string, data: array}
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+          const users = response.data.data;
           setUsers(users);
           setFilteredUsers(users);
         } else {

@@ -58,6 +58,25 @@ const Login = () => {
           </p>
         </div>
         
+        {/* Demo Credentials */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="text-sm font-medium text-blue-800 mb-2">Demo Credentials</h3>
+          <div className="space-y-2 text-xs">
+            <div className="bg-white p-2 rounded border">
+              <p className="font-medium text-gray-700">Admin Account:</p>
+              <p className="text-gray-600">Email: admin@sciqus.com</p>
+              <p className="text-gray-600">Username: admin</p>
+              <p className="text-gray-600">Password: admin123</p>
+            </div>
+            <div className="bg-white p-2 rounded border">
+              <p className="font-medium text-gray-700">Student Account:</p>
+              <p className="text-gray-600">Email: student@sciqus.com</p>
+              <p className="text-gray-600">Username: student</p>
+              <p className="text-gray-600">Password: student123</p>
+            </div>
+          </div>
+        </div>
+        
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {error && (
             <Alert 
@@ -70,23 +89,31 @@ const Login = () => {
           
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+              <label htmlFor="usernameOrEmail" className="block text-sm font-medium text-gray-700">
+                Email or Username
               </label>
               <input
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
+                {...register('usernameOrEmail', {
+                  required: 'Email or Username is required',
+                  validate: (value) => {
+                    // Allow either email format or username (no @ symbol)
+                    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                    const usernameRegex = /^[a-zA-Z0-9._-]+$/;
+                    
+                    if (value.includes('@')) {
+                      return emailRegex.test(value) || 'Invalid email address';
+                    } else {
+                      return usernameRegex.test(value) || 'Username can only contain letters, numbers, dots, hyphens, and underscores';
+                    }
                   },
                 })}
-                type="email"
+                type="text"
+                autoComplete="username email"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter your email"
+                placeholder="Enter your email or username"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              {errors.usernameOrEmail && (
+                <p className="mt-1 text-sm text-red-600">{errors.usernameOrEmail.message}</p>
               )}
             </div>
             
@@ -100,6 +127,7 @@ const Login = () => {
                     required: 'Password is required',
                   })}
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 pr-10"
                   placeholder="Enter your password"
                 />

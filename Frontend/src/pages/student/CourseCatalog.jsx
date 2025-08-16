@@ -24,33 +24,34 @@ const CourseCatalog = () => {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(null);
   const [alert, setAlert] = useState(null);
 
-  const categories = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'programming', label: 'Programming' },
-    { value: 'design', label: 'Design' },
-    { value: 'business', label: 'Business' },
-    { value: 'science', label: 'Science' },
-    { value: 'mathematics', label: 'Mathematics' }
-  ];
-
   useEffect(() => {
     fetchCourses();
+    
+    // Set up auto-refresh every 30 seconds for real-time data
+    const refreshInterval = setInterval(() => {
+      fetchCourses();
+    }, 30000);
+    
+    // Cleanup interval on component unmount
+    return () => clearInterval(refreshInterval);
   }, []);
 
   useEffect(() => {
     filterCourses();
-  }, [searchTerm, selectedCategory, courses]);
+  }, [searchTerm, courses]);
 
   const fetchCourses = async () => {
     try {
       setLoading(true);
       const response = await studentAPI.getAvailableCourses();
-      setCourses(response.data || []);
+      // Handle the response data correctly
+      const coursesData = response.data || [];
+      setCourses(coursesData);
+      console.log('Fetched courses:', coursesData); // Debug log
     } catch (error) {
       console.error('Error fetching courses:', error);
       showAlert('Failed to load courses', 'error');
@@ -62,22 +63,18 @@ const CourseCatalog = () => {
   const filterCourses = () => {
     let filtered = courses;
 
-    // Filter by search term
+    // Filter by search term using correct property names
     if (searchTerm) {
       filtered = filtered.filter(course =>
-        course.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.courseName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        course.instructor?.toLowerCase().includes(searchTerm.toLowerCase())
+        course.courseCode?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(course =>
-        course.category?.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    }
-
+    // Note: Category filtering removed since backend doesn't provide category field
+    // Can be added later when backend includes course categories
+    
     setFilteredCourses(filtered);
   };
 
@@ -177,7 +174,7 @@ const CourseCatalog = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="text"
-                  placeholder="Search courses..."
+                  placeholder="Search courses by name, code, or description..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -185,21 +182,15 @@ const CourseCatalog = () => {
               </div>
             </div>
 
-            {/* Category Filter */}
-            <div className="relative">
-              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white min-w-[200px]"
-              >
-                {categories.map(category => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {/* Refresh Button */}
+            <button
+              onClick={fetchCourses}
+              disabled={loading}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
+            >
+              <TrendingUp className="h-4 w-4" />
+              {loading ? 'Refreshing...' : 'Refresh'}
+            </button>
           </div>
         </div>
 
@@ -209,16 +200,15 @@ const CourseCatalog = () => {
             <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No courses found</h3>
             <p className="text-gray-600">
-              {searchTerm || selectedCategory !== 'all' 
-                ? 'Try adjusting your search or filters'
+              {searchTerm 
+                ? 'Try adjusting your search terms'
                 : 'No courses available at the moment'
-              }
-            </p>
+              }</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCourses.map((course) => (
-              <div key={course.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+              <div key={course.courseId} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
                 {/* Course Image/Icon */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-32 rounded-t-lg flex items-center justify-center">
                   <BookOpen className="h-12 w-12 text-white" />
@@ -228,40 +218,34 @@ const CourseCatalog = () => {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
-                      {course.category || 'General'}
+                      {course.courseCode}
                     </span>
                     <div className="flex items-center">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <Clock className="h-4 w-4 text-green-500" />
                       <span className="ml-1 text-sm text-gray-600">
-                        {course.rating || '4.5'}
+                        {course.courseDuration ? `${course.courseDuration} weeks` : 'Self-paced'}
                       </span>
                     </div>
                   </div>
 
                   <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {course.title}
+                    {course.courseName}
                   </h3>
 
                   <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {course.description}
+                    {course.description || 'No description available.'}
                   </p>
 
                   <div className="flex items-center text-sm text-gray-500 mb-4">
-                    <Users className="h-4 w-4 mr-1" />
-                    <span className="mr-4">{course.enrollmentCount || 0} students</span>
-                    <Clock className="h-4 w-4 mr-1" />
-                    <span>{course.duration || 'Self-paced'}</span>
+                    <Calendar className="h-4 w-4 mr-1" />
+                    <span className="mr-4">
+                      Created: {course.createdAt ? new Date(course.createdAt).toLocaleDateString() : 'N/A'}
+                    </span>
                   </div>
-
-                  {course.instructor && (
-                    <p className="text-sm text-gray-600 mb-4">
-                      Instructor: <span className="font-medium">{course.instructor}</span>
-                    </p>
-                  )}
 
                   <div className="flex items-center justify-between">
                     <Link
-                      to={`/courses/${course.id}`}
+                      to={`/courses/${course.courseId}`}
                       className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center"
                     >
                       Learn More
@@ -269,17 +253,17 @@ const CourseCatalog = () => {
                     </Link>
 
                     <button
-                      onClick={() => handleEnroll(course.id)}
-                      disabled={enrolling === course.id || course.isEnrolled}
+                      onClick={() => handleEnroll(course.courseId)}
+                      disabled={enrolling === course.courseId || course.isEnrolled}
                       className={`px-4 py-2 rounded font-medium text-sm transition-colors ${
                         course.isEnrolled
                           ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                          : enrolling === course.id
+                          : enrolling === course.courseId
                           ? 'bg-blue-300 text-white cursor-not-allowed'
                           : 'bg-blue-600 hover:bg-blue-700 text-white'
                       }`}
                     >
-                      {enrolling === course.id ? (
+                      {enrolling === course.courseId ? (
                         'Enrolling...'
                       ) : course.isEnrolled ? (
                         'Enrolled'

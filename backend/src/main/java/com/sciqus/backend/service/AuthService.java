@@ -63,7 +63,10 @@ public class AuthService {
     }
     
     public UserResponseDto register(UserRegistrationDto registerDto) {
-        if (userService.existsByUsername(registerDto.getUsername())) {
+        // Generate username from email if not provided
+        String username = registerDto.getUsername();
+        
+        if (userService.existsByUsername(username)) {
             throw new UserAlreadyExistsException("Username is already taken!");
         }
         
@@ -72,13 +75,13 @@ public class AuthService {
         }
         
         User user = new User();
-        user.setUsername(registerDto.getUsername());
+        user.setUsername(username);
         user.setEmail(registerDto.getEmail());
         user.setPassword(registerDto.getPassword());
         user.setFirstName(registerDto.getFirstName());
         user.setLastName(registerDto.getLastName());
         user.setPhoneNumber(registerDto.getPhoneNumber());
-        user.setRole(User.Role.STUDENT);
+        user.setRole(registerDto.getRoleEnum()); // Use the role from frontend
         
         User savedUser = userService.createUser(user);
         

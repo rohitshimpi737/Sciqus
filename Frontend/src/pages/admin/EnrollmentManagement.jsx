@@ -34,17 +34,19 @@ const EnrollmentManagement = () => {
       
       // Fetch courses and users
       const [coursesResponse, usersResponse] = await Promise.all([
-        adminAPI.getAllCourses(),
+        adminAPI.getAllCoursesForAdmin(),
         adminAPI.getAllUsers()
       ]);
       
-      if (coursesResponse.data && Array.isArray(coursesResponse.data)) {
-        setCourses(coursesResponse.data);
+      // Handle ApiResponseDto format for courses
+      if (coursesResponse.data && coursesResponse.data.success && Array.isArray(coursesResponse.data.data)) {
+        setCourses(coursesResponse.data.data);
       }
       
-      if (usersResponse.data && Array.isArray(usersResponse.data)) {
+      // Handle ApiResponseDto format for users
+      if (usersResponse.data && usersResponse.data.success && Array.isArray(usersResponse.data.data)) {
         // Filter only students
-        const students = usersResponse.data.filter(user => user.role === 'STUDENT');
+        const students = usersResponse.data.data.filter(user => user.role === 'STUDENT');
         setUsers(students);
       }
     } catch (error) {

@@ -38,7 +38,15 @@ const AdminDashboard = () => {
         const response = await adminAPI.getDashboardStats();
         
         if (response.data.success) {
-          setStats(response.data.data);
+          const backendStats = response.data.data;
+          // Map backend stats to frontend expected format
+          setStats({
+            totalUsers: backendStats.totalUsers || 0,
+            totalCourses: backendStats.totalCourses || 0,
+            activeStudents: backendStats.totalStudents || 0, // Map totalStudents to activeStudents
+            activeCourses: backendStats.activeCourses || 0,
+            totalAdmins: (backendStats.totalUsers || 0) - (backendStats.totalStudents || 0) // Calculate admins
+          });
           setApiConnected(true);
         } else {
           throw new Error(response.data.message || 'Failed to fetch dashboard stats');

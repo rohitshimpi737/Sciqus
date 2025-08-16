@@ -38,6 +38,14 @@ const MyLearning = () => {
 
   useEffect(() => {
     fetchMyLearning();
+    
+    // Set up auto-refresh every 45 seconds for enrollment data
+    const refreshInterval = setInterval(() => {
+      fetchMyLearning();
+    }, 45000);
+    
+    // Cleanup interval on component unmount
+    return () => clearInterval(refreshInterval);
   }, []);
 
   useEffect(() => {
@@ -47,8 +55,39 @@ const MyLearning = () => {
   const fetchMyLearning = async () => {
     try {
       setLoading(true);
-      const response = await studentAPI.getMyEnrollments();
-      setEnrollments(response.data || []);
+      const enrollmentResponse = await studentAPI.getMyEnrollments();
+      console.log('My enrollments data:', enrollmentResponse.data); // Debug log
+      
+      // Enrich enrollment data with course details
+      const enrichedEnrollments = await Promise.all(
+        (enrollmentResponse.data || []).map(async (enrollment) => {
+          try {
+            // For now, we'll work with the data we have
+            // In a real system, you'd fetch additional course details here
+            return {
+              ...enrollment,
+              // Map backend properties to frontend expectations
+              courseTitle: enrollment.courseName,
+              courseDescription: `Course: ${enrollment.courseName}`, // Placeholder since backend doesn't provide description in enrollment
+              enrolledDate: new Date(enrollment.enrollmentDate).toLocaleDateString(),
+              progress: 0, // Default progress since backend doesn't track progress yet
+              id: enrollment.enrollmentId
+            };
+          } catch (error) {
+            console.error('Error enriching enrollment:', error);
+            return {
+              ...enrollment,
+              courseTitle: enrollment.courseName,
+              courseDescription: `Course: ${enrollment.courseName}`,
+              enrolledDate: new Date(enrollment.enrollmentDate).toLocaleDateString(),
+              progress: 0,
+              id: enrollment.enrollmentId
+            };
+          }
+        })
+      );
+      
+      setEnrollments(enrichedEnrollments);
     } catch (error) {
       console.error('Error fetching enrollments:', error);
       showAlert('Failed to load your courses', 'error');
@@ -60,15 +99,16 @@ const MyLearning = () => {
   const filterEnrollments = () => {
     let filtered = enrollments;
 
-    // Filter by search term
+    // Filter by search term using correct property names
     if (searchTerm) {
       filtered = filtered.filter(enrollment =>
         enrollment.courseTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        enrollment.courseDescription?.toLowerCase().includes(searchTerm.toLowerCase())
+        enrollment.courseDescription?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        enrollment.courseName?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filter by status
+    // Filter by status based on progress
     if (selectedStatus !== 'all') {
       filtered = filtered.filter(enrollment => {
         const progress = enrollment.progress || 0;
@@ -84,8 +124,45 @@ const MyLearning = () => {
         }
       });
     }
-
+    
     setFilteredEnrollments(filtered);
+  };
+
+  const getEnrollmentStatus = (enrollmentDate) => {
+    const enrolledDate = new Date(enrollmentDate);
+    const daysSinceEnrollment = Math.floor((new Date() - enrolledDate) / (1000 * 60 * 60 * 24));
+    
+    return (
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+        <CheckCircle className="h-3 w-3 mr-1" />
+        Enrolled {daysSinceEnrollment} days ago
+      </span>
+    );
+  };
+
+  const getStatusBadge = (progress) => {
+    if (progress >= 100) {
+      return (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+          <CheckCircle className="h-3 w-3 mr-1" />
+          Completed
+        </span>
+      );
+    } else if (progress > 0) {
+      return (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+          <Clock className="h-3 w-3 mr-1" />
+          In Progress
+        </span>
+      );
+    } else {
+      return (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+          <BookOpen className="h-3 w-3 mr-1" />
+          Not Started
+        </span>
+      );
+    }
   };
 
   const getProgressColor = (progress) => {
@@ -93,28 +170,6 @@ const MyLearning = () => {
     if (progress >= 50) return 'bg-blue-500';
     if (progress > 0) return 'bg-yellow-500';
     return 'bg-gray-300';
-  };
-
-  const getStatusBadge = (progress) => {
-    if (progress >= 100) {
-      return (
-        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-          Completed
-        </span>
-      );
-    }
-    if (progress > 0) {
-      return (
-        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-          In Progress
-        </span>
-      );
-    }
-    return (
-      <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
-        Not Started
-      </span>
-    );
   };
 
   const showAlert = (message, type) => {
@@ -209,7 +264,7 @@ const MyLearning = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">In Progress</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {enrollments.filter(e => e.progress > 0 && e.progress < 100).length}
+                  {enrollments.filter(e => (e.progress || 0) > 0 && (e.progress || 0) < 100).length}
                 </p>
               </div>
             </div>
@@ -223,7 +278,7 @@ const MyLearning = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Completed</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {enrollments.filter(e => e.progress >= 100).length}
+                  {enrollments.filter(e => (e.progress || 0) >= 100).length}
                 </p>
               </div>
             </div>
@@ -237,7 +292,7 @@ const MyLearning = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Certificates</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {enrollments.filter(e => e.progress >= 100).length}
+                  {enrollments.filter(e => (e.progress || 0) >= 100).length}
                 </p>
               </div>
             </div>
@@ -364,7 +419,7 @@ const MyLearning = () => {
                         to={`/courses/${enrollment.courseId}/learn`}
                         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-sm transition-colors text-center"
                       >
-                        {enrollment.progress >= 100 ? 'Review' : enrollment.progress > 0 ? 'Continue' : 'Start Learning'}
+                        {(enrollment.progress || 0) >= 100 ? 'Review' : (enrollment.progress || 0) > 0 ? 'Continue' : 'Start Learning'}
                       </Link>
                       
                       <Link
@@ -374,7 +429,7 @@ const MyLearning = () => {
                         Course Details
                       </Link>
 
-                      {enrollment.progress >= 100 && (
+                      {(enrollment.progress || 0) >= 100 && (
                         <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-medium text-sm transition-colors">
                           <Award className="h-4 w-4 inline mr-1" />
                           Certificate

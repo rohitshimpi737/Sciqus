@@ -14,7 +14,8 @@ import {
   MyLearning,
   AdminDashboard,
   UserManagement,
-  CourseManagement
+  CourseManagement,
+  EnrollmentManagement
 } from './pages';
 
 function App() {
@@ -74,26 +75,9 @@ function App() {
               }
             />
             
-            {/* Admin Routes */}
-            <Route
-              path="/admin/users"
-              element={
-                <ProtectedRoute roles={['ADMIN']}>
-                  <UserManagement />
-                </ProtectedRoute>
-              }
-            />
+            {/* Admin Routes - Removed: Admin functionality now accessed through Dashboard tabs */}
             
-            <Route
-              path="/admin/courses"
-              element={
-                <ProtectedRoute roles={['ADMIN']}>
-                  <CourseManagement />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Legacy temporary routes */}
+            {/* Legacy temporary routes - Can be removed in future */}
             <Route
               path="/users"
               element={

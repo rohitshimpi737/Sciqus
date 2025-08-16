@@ -32,12 +32,12 @@ const CourseManagement = () => {
         setLoading(true);
         setError(null);
         
-        const response = await adminAPI.getAllCourses();
+        const response = await adminAPI.getAllCoursesForAdmin();
         
-        // Assuming your backend returns course data directly as an array, like users
-        if (response.data && Array.isArray(response.data)) {
-          setCourses(response.data);
-          setFilteredCourses(response.data);
+        // Backend returns ApiResponseDto format: {success: boolean, message: string, data: array}
+        if (response.data && response.data.success && Array.isArray(response.data.data)) {
+          setCourses(response.data.data);
+          setFilteredCourses(response.data.data);
         } else {
           throw new Error('Invalid response format from server');
         }

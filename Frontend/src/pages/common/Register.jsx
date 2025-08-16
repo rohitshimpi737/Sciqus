@@ -107,11 +107,38 @@ const Register = () => {
                   },
                 })}
                 type="text"
+                autoComplete="name"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your full name"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+              )}
+            </div>
+            
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <input
+                {...register('username', {
+                  required: 'Username is required',
+                  minLength: {
+                    value: 3,
+                    message: 'Username must be at least 3 characters',
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9_]+$/,
+                    message: 'Username can only contain letters, numbers, and underscores',
+                  },
+                })}
+                type="text"
+                autoComplete="username"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your username"
+              />
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
               )}
             </div>
             
@@ -128,6 +155,7 @@ const Register = () => {
                   },
                 })}
                 type="email"
+                autoComplete="email"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your email"
               />
@@ -167,6 +195,7 @@ const Register = () => {
                     },
                   })}
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 pr-10"
                   placeholder="Enter your password"
                 />
@@ -199,6 +228,7 @@ const Register = () => {
                       value === password || 'Passwords do not match',
                   })}
                   type={showConfirmPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 pr-10"
                   placeholder="Confirm your password"
                 />

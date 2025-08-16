@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, BookOpen, Users, User, Home } from 'lucide-react';
+import { LogOut, BookOpen, Users, User, Home, Play } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated, isAdmin, isTeacher } = useAuth();
@@ -58,7 +58,7 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            {/* Dashboard Link - Role-specific */}
+            {/* Dashboard Link - Role-specific routing handled in Dashboard component */}
             <Link
               to="/dashboard"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
@@ -67,36 +67,41 @@ const Navbar = () => {
               <span>Dashboard</span>
             </Link>
             
-            {/* Courses Link - Available to all users */}
-            <Link
-              to="/courses"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
-            >
-              <BookOpen className="h-4 w-4" />
-              <span>Courses</span>
-            </Link>
-            
-            {/* Student Profile Link */}
+            {/* Courses Link - Role-specific */}
             {isStudent && (
               <Link
-                to="/student/profile"
+                to="/courses"
                 className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
               >
-                <User className="h-4 w-4" />
-                <span>Profile</span>
+                <BookOpen className="h-4 w-4" />
+                <span>Course Catalog</span>
               </Link>
+            )}
+            {/* Note: Admin course management is handled within Admin Dashboard */}
+            
+            {/* Student-specific Links */}
+            {isStudent && (
+              <>
+                <Link
+                  to="/my-learning"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+                >
+                  <Play className="h-4 w-4" />
+                  <span>My Learning</span>
+                </Link>
+                
+                <Link
+                  to="/student/profile"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
+                >
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
+              </>
             )}
             
-            {/* Admin/Teacher Only Links */}
-            {(isAdmin || isTeacher) && (
-              <Link
-                to="/users"
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium flex items-center space-x-1"
-              >
-                <Users className="h-4 w-4" />
-                <span>Users</span>
-              </Link>
-            )}
+            {/* Admin/Teacher Only Links - Simplified */}
+            {/* Note: Admin operations are handled within the Admin Dashboard tabs */}
             
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2">

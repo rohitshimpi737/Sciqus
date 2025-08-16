@@ -13,7 +13,8 @@ import {
   Plus, 
   Home, 
   ArrowRight,
-  TrendingUp 
+  TrendingUp,
+  Play
 } from 'lucide-react';const StudentDashboard = () => {
   const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
@@ -26,6 +27,14 @@ import {
 
   useEffect(() => {
     fetchDashboardData();
+    
+    // Set up auto-refresh every 60 seconds for dashboard data
+    const refreshInterval = setInterval(() => {
+      fetchDashboardData();
+    }, 60000);
+    
+    // Cleanup interval on component unmount
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const fetchDashboardData = async () => {
@@ -269,6 +278,13 @@ import {
             >
               <BookOpen className="h-4 w-4" />
               Course Catalog
+            </Link>
+            <Link
+              to="/my-learning"
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600 px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              <Play className="h-4 w-4" />
+              My Learning
             </Link>
             <Link
               to="/student/profile"
