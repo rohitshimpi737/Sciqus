@@ -49,59 +49,60 @@ A full-stack Learning Management System built with **Spring Boot** (Backend) and
 ![Registration Page](screenshots/Screenshot%202025-08-17%20022047.png)
 *User registration interface with form validation*
 
+### Student Interface
+![Student Home Page](screenshots/Screenshot%202025-08-17%20022133.png)
+*Student home dashboard with overview and navigation*
+
+![Student Courses Page](screenshots/Screenshot%202025-08-17%20022147.png)
+*Student courses page showing enrolled and available courses*
+
+![Course Catalog Page](screenshots/Screenshot%202025-08-17%20022201.png)
+*Course catalog page for browsing available courses*
+
+![My Learning Page](screenshots/Screenshot%202025-08-17%20022215.png)
+*My Learning page showing student's enrolled courses*
+
+![Student Profile Page](screenshots/Screenshot%202025-08-17%20022227.png)
+*Student profile page for managing personal information*
+
+![Course Detail Page](screenshots/Screenshot%202025-08-17%20022242.png)
+*Course detail page with comprehensive course information*
+
 ### Admin Interface
-![Admin Dashboard](screenshots/Screenshot%202025-08-17%20022133.png)
-*Admin dashboard with system overview and navigation*
+![Admin Dashboard Overview](screenshots/Screenshot%202025-08-17%20022333.png)
+*Admin dashboard with system statistics and overview*
 
-![User Management](screenshots/Screenshot%202025-08-17%20022147.png)
-*User management with create, edit, and delete operations*
+![User Management Page](screenshots/Screenshot%202025-08-17%20022350.png)
+*User management page for admin operations*
 
-![User Creation Form](screenshots/Screenshot%202025-08-17%20022201.png)
+![Course Management](screenshots/Screenshot%202025-08-17%20022406.png)
+*Admin course management interface*
+
+![Enrollment Management](screenshots/Screenshot%202025-08-17%20022423.png)
+*Admin enrollment management system*
+
+![Enrollment Management Details](screenshots/Screenshot%202025-08-17%20022455.png)
+*Detailed enrollment management interface*
+
+![Add Course Form](screenshots/Screenshot%202025-08-17%20022507.png)
+*Add new course form for administrators*
+
+![Enroll Student to Course](screenshots/Screenshot%202025-08-17%20022525.png)
+*Interface for enrolling students to courses*
+
+![Add New User Form](screenshots/Screenshot%202025-08-17%20022538.png)
 *Add new user form with role selection*
 
-![Course Management](screenshots/Screenshot%202025-08-17%20022215.png)
-*Course management interface with CRUD operations*
+### Additional Views
+![Student Enrollment Page](screenshots/Screenshot%202025-08-17%20023339.png)
+*Student's personal enrollment page*
 
-![Add New Course](screenshots/Screenshot%202025-08-17%20022227.png)
-*Course creation form with detailed fields*
+![Student Courses View](screenshots/Screenshot%202025-08-17%20023352.png)
+*Student's courses page with enrollment status*
 
-![Course Details Form](screenshots/Screenshot%202025-08-17%20022242.png)
-*Comprehensive course creation with description and duration*
-
-![Enrollment Management](screenshots/Screenshot%202025-08-17%20022333.png)
-*Student enrollment management and tracking*
-
-![System Statistics](screenshots/Screenshot%202025-08-17%20022350.png)
-*Admin dashboard with system metrics and statistics*
-
-### Student Interface
-![Student Dashboard](screenshots/Screenshot%202025-08-17%20022406.png)
-*Student dashboard with personalized learning overview*
-
-![Course Catalog](screenshots/Screenshot%202025-08-17%20022423.png)
-*Browse available courses with enrollment options*
-
-![Course Details](screenshots/Screenshot%202025-08-17%20022455.png)
-*Detailed course information and enrollment*
-
-![My Learning](screenshots/Screenshot%202025-08-17%20022507.png)
-*Student's enrolled courses and progress tracking*
-
-![Student Profile](screenshots/Screenshot%202025-08-17%20022525.png)
-*Student profile management and settings*
-
-### Navigation & Layout
-![Navigation Demo](screenshots/Screenshot%202025-08-17%20022538.png)
-*Role-based navigation and menu system*
-
-![System Overview](screenshots/Screenshot%202025-08-17%20023339.png)
-*Complete system interface overview*
-
-![Application Flow](screenshots/Screenshot%202025-08-17%20023352.png)
-*User workflow and application navigation*
-
-![Final Interface](screenshots/Screenshot%202025-08-17%20023403.png)
+![Final Interface View](screenshots/Screenshot%202025-08-17%20023403.png)
 *Complete application interface demonstration*
+
 
 ## ⚡ Quick Start
 
