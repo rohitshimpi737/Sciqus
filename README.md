@@ -43,28 +43,65 @@ A full-stack Learning Management System built with **Spring Boot** (Backend) and
 ## 📱 UI Screenshots
 
 ### Login & Authentication
-![Login Page](screenshots/login.png)
-*Login page with demo credentials and role-based authentication*
+![Login Page](screenshots/Screenshot%202025-08-17%20022035.png)
+*Login page with demo credentials and flexible authentication*
 
-### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
-*Admin dashboard with system statistics and management tools*
+![Registration Page](screenshots/Screenshot%202025-08-17%20022047.png)
+*User registration interface with form validation*
 
-![User Management](screenshots/user-management.png)
-*User management interface with CRUD operations*
+### Admin Interface
+![Admin Dashboard](screenshots/Screenshot%202025-08-17%20022133.png)
+*Admin dashboard with system overview and navigation*
 
-![Course Management](screenshots/course-management.png)
-*Course management with creation, editing, and status controls*
+![User Management](screenshots/Screenshot%202025-08-17%20022147.png)
+*User management with create, edit, and delete operations*
+
+![User Creation Form](screenshots/Screenshot%202025-08-17%20022201.png)
+*Add new user form with role selection*
+
+![Course Management](screenshots/Screenshot%202025-08-17%20022215.png)
+*Course management interface with CRUD operations*
+
+![Add New Course](screenshots/Screenshot%202025-08-17%20022227.png)
+*Course creation form with detailed fields*
+
+![Course Details Form](screenshots/Screenshot%202025-08-17%20022242.png)
+*Comprehensive course creation with description and duration*
+
+![Enrollment Management](screenshots/Screenshot%202025-08-17%20022333.png)
+*Student enrollment management and tracking*
+
+![System Statistics](screenshots/Screenshot%202025-08-17%20022350.png)
+*Admin dashboard with system metrics and statistics*
 
 ### Student Interface
-![Student Dashboard](screenshots/student-dashboard.png)
-*Student dashboard with learning progress and quick actions*
+![Student Dashboard](screenshots/Screenshot%202025-08-17%20022406.png)
+*Student dashboard with personalized learning overview*
 
-![Course Catalog](screenshots/course-catalog.png)
-*Course catalog with search and enrollment capabilities*
+![Course Catalog](screenshots/Screenshot%202025-08-17%20022423.png)
+*Browse available courses with enrollment options*
 
-![My Learning](screenshots/my-learning.png)
-*Student's enrolled courses and learning progress tracking*
+![Course Details](screenshots/Screenshot%202025-08-17%20022455.png)
+*Detailed course information and enrollment*
+
+![My Learning](screenshots/Screenshot%202025-08-17%20022507.png)
+*Student's enrolled courses and progress tracking*
+
+![Student Profile](screenshots/Screenshot%202025-08-17%20022525.png)
+*Student profile management and settings*
+
+### Navigation & Layout
+![Navigation Demo](screenshots/Screenshot%202025-08-17%20022538.png)
+*Role-based navigation and menu system*
+
+![System Overview](screenshots/Screenshot%202025-08-17%20023339.png)
+*Complete system interface overview*
+
+![Application Flow](screenshots/Screenshot%202025-08-17%20023352.png)
+*User workflow and application navigation*
+
+![Final Interface](screenshots/Screenshot%202025-08-17%20023403.png)
+*Complete application interface demonstration*
 
 ## ⚡ Quick Start
 
