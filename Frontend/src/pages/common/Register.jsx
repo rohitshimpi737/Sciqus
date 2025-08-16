@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '../context/AuthContext';
-import Alert from '../components/Alert';
+import { useAuth } from '../../context/AuthContext';
+import Alert from '../../components/Alert';
 import { BookOpen, Eye, EyeOff, CheckCircle } from 'lucide-react';
 
 const Register = () => {

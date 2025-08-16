@@ -77,6 +77,13 @@ export const studentAPI = {
   enrollInCourse: (courseId) => api.post(`/student/enroll/${courseId}`),
   getMyInfo: () => api.get('/student/info'),
   getMyCourses: () => api.get('/student/courses'),
+  getMyEnrollments: () => api.get('/student/enrollments'),
+  getAvailableCourses: () => api.get('/courses/available'),
+  getCourseDetails: (courseId) => api.get(`/courses/${courseId}`),
+  getAllCourses: () => api.get('/courses'),
+  getDashboard: () => api.get('/student/dashboard'),
+  updateProfile: (profileData) => api.put('/student/profile', profileData),
+  changePassword: (passwordData) => api.put('/student/change-password', passwordData),
 };
 
 // Admin API

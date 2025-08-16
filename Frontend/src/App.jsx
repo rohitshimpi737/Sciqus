@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Navbar, ProtectedRoute } from './components';
-import UserStatusGuard from './components/UserStatusGuard';
 import { 
   Landing, 
   Login, 
@@ -11,17 +10,20 @@ import {
   Unauthorized,
   StudentProfile,
   CourseCatalog,
-  CourseDetails
+  CourseDetails,
+  MyLearning,
+  AdminDashboard,
+  UserManagement,
+  CourseManagement
 } from './pages';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <UserStatusGuard>
-          <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <Routes>
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
+          <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -63,15 +65,40 @@ function App() {
               }
             />
             
+            <Route
+              path="/my-learning"
+              element={
+                <ProtectedRoute>
+                  <MyLearning />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Admin Routes */}
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute roles={['ADMIN']}>
+                  <UserManagement />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/admin/courses"
+              element={
+                <ProtectedRoute roles={['ADMIN']}>
+                  <CourseManagement />
+                </ProtectedRoute>
+              }
+            />
+            
             {/* Legacy temporary routes */}
             <Route
               path="/users"
               element={
                 <ProtectedRoute roles={['ADMIN', 'TEACHER']}>
-                  <div className="p-8 text-center">
-                    <h1 className="text-2xl font-bold">Users Management</h1>
-                    <p>Coming soon...</p>
-                  </div>
+                  <UserManagement />
                 </ProtectedRoute>
               }
             />
@@ -85,7 +112,6 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
-        </UserStatusGuard>
       </Router>
     </AuthProvider>
   );

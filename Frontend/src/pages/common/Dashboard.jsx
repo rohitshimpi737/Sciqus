@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
-import { AdminDashboard } from './admin';
-import { StudentDashboard } from './student';
+import { useAuth } from '../../context/AuthContext';
+import { AdminDashboard } from '../admin';
+import { StudentDashboard } from '../student';
 
 const Dashboard = () => {
   const { user, isAdmin, isStudent } = useAuth();
